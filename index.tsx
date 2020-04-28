@@ -13,19 +13,16 @@ import * as ol from 'openlayers';
 
 interface AppProps { }
 interface AppState { }
-
 class App extends Component<AppProps, AppState> {
   constructor(props) {
     super(props);
   }
 
   render() {
-    // https://api.mapbox.com/styles/v1/cuemura/ck9jxrm010znh1iqaj49l5z5e/wmts?access_token=pk.eyJ1IjoiY3VlbXVyYSIsImEiOiJjazhqdm5yMDAwNmRmM2VzMGVobnBycjBhIn0.GWKHmJhVRikIzoo7kSvIzg
     let osmSource =  new ol.source.OSM({
       attributions: [
         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
       ],
-      opaque: false,
       url: 'https://api.mapbox.com/styles/v1/cuemura/ck9jxrm010znh1iqaj49l5z5e/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3VlbXVyYSIsImEiOiJjazhqdm5yMDAwNmRmM2VzMGVobnBycjBhIn0.GWKHmJhVRikIzoo7kSvIzg'
     });
 
@@ -33,28 +30,53 @@ class App extends Component<AppProps, AppState> {
       layer: 'terrain-labels'
     });
 
-    var vectorSource = new ol.source.Vector({
-      format: new ol.format.GeoJSON(),
-      url: 'rodents.json',
-      /*loader: function(extent, resolution, projection) {
-        var proj = projection.getCode();
-        var url = 'http://bl.ocks.org/awoodruff/raw/0883d211538ed05a82fd1b82bd65bf34/f200e3b9a8db7626a1cc35433ff3b2e1185cd1d9/rodents.geojson';
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        var onError = function() {
-          vectorSource.removeLoadedExtent(extent);
-        }
-        xhr.onerror = onError;
-        xhr.onload = function() {
-          if (xhr.status == 200) {
-            vectorSource.addFeatures(
-                vectorSource.getFormat().readFeatures(xhr.responseText));
-          } else {
-            onError();
+    let objGeo = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          id: 1,
+          properties: {
+            lat: -23.57556350,
+            lng: -46.60644710,
+            count: 1
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [-23.57556350, -46.60644710]
+          }
+        },
+        {
+          type: "Feature",
+          id: 2,
+          properties: {
+            lat: -23.57566350,
+            lng: -46.60648710,
+            count: 3
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [-23.57556350, -46.60644710]
+          }
+        },
+        {
+          type: "Feature",
+          id: 3,
+          properties: {
+            lat: -23.57556350,
+            lng: -46.60644710,
+            count: 5
+          },
+          geometry: {
+            type: "Point",
+            coordinates: [-23.57556350, -46.60644710]
           }
         }
-        xhr.send();
-      }*/
+      ]
+    };
+
+    var vectorSource = new ol.source.Vector({
+      features: (new ol.format.GeoJSON()).readFeatures(objGeo)
     });
 
     let heatmapSource = new ol.source.Vector({
@@ -83,12 +105,12 @@ class App extends Component<AppProps, AppState> {
         </Container>
         <Container>
           <Row>
-          <Map view={{center:[0,0], zoom:1}}>
-            <Layers>
-              <layer.Tile source={osmSource} />
-              <layer.Heatmap source={vectorSource} blur={15} radius={5} />
-            </Layers>
-          </Map>
+            <Map>
+              <Layers>
+                <layer.Tile source={osmSource} />
+                <layer.Heatmap source={vectorSource} blur={15} radius={5} />
+              </Layers>
+            </Map>
           </Row>
         </Container>
       </div>
