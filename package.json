@@ -6,11 +6,10 @@
     "@types/react": "^16.9.34",
     "@types/react-bootstrap": "^1.0.1",
     "@types/react-dom": "^16.9.7",
-    "openlayers": "^4.6.5",
+    "ol": "^6.3.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
-    "react-dom": "^16.13.1",
-    "react-openlayers": "^0.3.0"
+    "react-dom": "^16.13.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
